@@ -4,16 +4,16 @@ A tailwindcssd plugin that provides a utilities for fluid typography and spacing
 
 ## Installation
 
-> Note that @tailwindcss/forms is designed for Tailwind CSS v2.0.
+> Note that this plugin is designed for Tailwind CSS v2.x.
 
 Install the plugin from npm:
 
 ```sh
 # Using npm
-npm install borisk47/tailwindcss-fluidify
+npm install @borisk47/tailwindcss-fluidify
 
 # Using Yarn
-yarn add borisk47/tailwindcss-fluidify
+yarn add @borisk47/tailwindcss-fluidify
 ```
 
 Then add the plugin to your `tailwind.config.js` file:
