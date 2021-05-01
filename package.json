@@ -1,0 +1,27 @@
+{
+  "name": "borisk47/tailwindcss-fluidify",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "repository": "https://github.com/borisk47/tailwindcss-fluidify",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run serve\" \"npm run watch\"",
+    "serve": "live-server .",
+    "build": "node scripts/build.js",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=2.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.2",
+    "clean-css": "^4.2.1",
+    "concurrently": "^5.3.0",
+    "live-server": "^1.2.1",
+    "postcss": "^8.1.7",
+    "tailwindcss": "^2.0.3"
+  }
+}
