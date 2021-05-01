@@ -1,6 +1,8 @@
 {
   "name": "@borisk47/tailwindcss-fluidify",
   "version": "0.1.0",
+  "description": "A tailwindcss plugin that provides utilities for fluid typography and spacing.",
+  "keywords": ["tailwind", "tailwindcss","plugin", "fluid", "typography", "responsive", "layout", "spacing"],
   "main": "src/index.js",
   "license": "MIT",
   "repository": "https://github.com/borisk47/tailwindcss-fluidify",

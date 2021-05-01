@@ -1,6 +1,6 @@
 # tailwindcss-fluidify
 
-A tailwindcssd plugin that provides a utilities for fluid typography and spacing.
+A tailwindcss plugin that provides utilities for fluid typography and spacing.
 
 ## Installation
 
