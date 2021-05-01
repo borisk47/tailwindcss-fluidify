@@ -23,6 +23,7 @@
     "clean-css": "^5.0.0",
     "concurrently": "^6.0.0",
     "live-server": "^1.2.1",
-    "postcss": "^8.1.7"
+    "postcss": "^8.1.7",
+    "tailwindcss": ">=2.0.0"
   }
 }
