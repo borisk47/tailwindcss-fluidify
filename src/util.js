@@ -7,7 +7,7 @@ function clampifyProp(propName) {
     const minProp = `--f-${propName}-min`;
     const maxProp = `--f-${propName}-max`;
     const deltaY = `( var(${maxProp}) - var(${minProp}) )`;
-    const scale = '(100vw - var(--f-from-screen-px)) / ( var(--f-to-screen) - var(--f-from-screen) )';
+    const scale = 'var(--f-scale)';
 
     return `clamp(
         calc(var(${minProp}) * var(--f-rem-px)),
