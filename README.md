@@ -25,7 +25,7 @@ module.exports = {
     // ...
   },
   plugins: [
-    require('borisk47/tailwindcss-fluidify'),
+    require('@borisk47/tailwindcss-fluidify'),
     // ...
   ],
 }
