@@ -51,12 +51,15 @@ const topic = function({addUtilities, theme, config, variants,e}) {
     const setters = {
         gap: {
             'gap' : utils.clampifyProp('gap'),
+            'min-height': '0.00001vw', // fix safari scaling bug
         },
         'gap-x': {
             'column-gap' : utils.clampifyProp('gap-x'),
+            'min-height': '0.00001vw', // fix safari scaling bug
         },
         'gap-y': {
             'row-gap' : utils.clampifyProp('gap-y'),
+            'min-height': '0.00001vw', // fix safari scaling bug
         }
     }
 

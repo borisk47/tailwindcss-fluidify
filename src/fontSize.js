@@ -43,7 +43,7 @@ const topic = function({addUtilities, theme, config, variants,e}) {
     const setters = {
         text: {
             'fontSize' : utils.clampifyProp('text'),
-            'min-height': '0vw' // fix safari scaling bug
+            'min-height': '0.00001vw', // fix safari scaling bug
         }
     }
 
