@@ -15,7 +15,7 @@
   "main": "src/index.js",
   "files": [
     "src/**",
-    "dist/**"
+    "dist/*.min.css"
   ],
   "license": "MIT",
   "repository": "https://github.com/borisk47/tailwindcss-fluidify",
