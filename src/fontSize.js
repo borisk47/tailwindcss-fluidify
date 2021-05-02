@@ -13,22 +13,17 @@ const topic = function({addUtilities, theme, config, variants,e}) {
     addUtilities(root);
 
 
-    const remFontSizes = _.assign({},
-        ..._.chain(theme('fontSize'))
-            .pickBy((size) => size[0].endsWith('rem'))
-            .flatMap( (size, modifier) => ({[`${modifier}`]: size[0]} ))
+    const remFontSizes = _.chain( theme('fontSize') )
+            .mapValues( size => size[0] )
+            .pickBy((size) => size.endsWith('rem'))
             .value()
-    );
+            ;
 
     const prefixes = ['text'];
-    const utilities =  _.flatMap(remFontSizes, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-min`]:utils.unitless(size),
-                },
-            }
-        })
+    const utilities =  _.transform(remFontSizes, (result, size, modifier) => {
+         _.each(prefixes, prefix => {
+            result[`.${e(`${prefix}-${modifier}`)}`] = {[`--f-${prefix}-min`]:utils.unitless(size)}
+         });
     });
     addUtilities(utilities, variants('fontSize'));
 
