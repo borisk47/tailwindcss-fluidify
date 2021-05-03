@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const utils = require('./util')
+const utils = require('./utils')
 
 /*
     LIMITATIONS:
@@ -8,7 +8,7 @@ const utils = require('./util')
 
  */
 
-const topic = function({addUtilities, theme, config, variants,e}) {
+const topic = function(tw) {
 
     const root = {
         ':root' : {
@@ -16,43 +16,7 @@ const topic = function({addUtilities, theme, config, variants,e}) {
             '--f-space-y-min': '0',
         }
     }
-    addUtilities(root);
-
-
-    const remPositiveSpace = _.assign({'0':'0rem'},
-        ..._.chain(theme('space'))
-            .pickBy((size) => size.endsWith('rem'))
-            .pickBy((size) => !size.startsWith('-'))
-            .flatMap( (size, modifier) => ({[`${modifier}`]: size} ))
-            .value()
-    );
-
-
-    const prefixes = ['space-x', 'space-y'];
-
-    const utilities =  _.flatMap(remPositiveSpace, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-min`]:utils.unitless(size),
-                },
-            }
-        })
-    });
-    addUtilities(utilities, variants('space'));
-
-
-    const toUtilities =  _.flatMap(remPositiveSpace, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`to-${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-max`]:utils.unitless(size),
-                },
-            }
-        })
-    });
-    addUtilities(toUtilities, variants('space'));
-
+    tw.addUtilities(root);
 
     const setters = {
         'space-x': {
@@ -63,16 +27,17 @@ const topic = function({addUtilities, theme, config, variants,e}) {
         },
     }
 
-    const setterUtilities = _.flatMap(setters, (value, key) => {
-        const classes = _.chain(remPositiveSpace)
-            .map( (_, modifier) => `.${e(`to-${key}-${modifier}`)} > :not([hidden]) ~ :not([hidden])`)
-            .join(',')
-            .value();
+    const themeKey = 'space';
+    const modifiers = _.assign({'0':'0rem'},
+        ..._.chain(tw.theme(themeKey))
+            .pickBy((size) => !size.startsWith('-'))
+            .pickBy((size) => size.endsWith('rem'))
+            .flatMap( (size, modifier) => ({[`${modifier}`]: size} ))
+            .value()
+    );
 
-        return {[`${classes}`]: value};
-    });
+    utils.createClampedUtilities(tw,{themeKey, modifiers, setters});
 
-    addUtilities(setterUtilities, variants('space'));
 };
 
 module.exports = topic;

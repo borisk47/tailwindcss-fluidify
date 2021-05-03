@@ -1,7 +1,8 @@
 const _ = require('lodash')
-const utils = require('./util')
+const utils = require('./utils')
 
-const topic = function({addUtilities, theme, config, variants,e}) {
+
+const topic = function(tw) {
 
     const root = {
         ':root' : {
@@ -14,42 +15,16 @@ const topic = function({addUtilities, theme, config, variants,e}) {
             '--f-my-min': '0',
         }
     }
-    addUtilities(root);
+    tw.addUtilities(root);
 
+    const themeKey = 'margin';
 
-    const remPositiveMargins = _.assign({'0':'0rem'},
-        ..._.chain(theme('margin'))
+    const modifiers = _.assign({'0':'0rem'},
+        _.chain(tw.theme(themeKey))
             .pickBy((size) => size.endsWith('rem'))
             .pickBy((size) => !size.startsWith('-'))
-            .flatMap( (size, modifier) => ({[`${modifier}`]: size} ))
             .value()
     );
-
-
-    const prefixes = ['m', 'ml', 'mt', 'mr', 'mb', 'mx', 'my'];
-
-    const utilities =  _.flatMap(remPositiveMargins, (size, modifier) => {
-            return _.map(prefixes, prefix => {
-                return {
-                    [`.${e(`${prefix}-${modifier}`)}`]:{
-                        [`--f-${prefix}-min`]:utils.unitless(size),
-                    },
-                }
-            })
-    });
-    addUtilities(utilities, variants('margin'));
-
-
-    const toUtilities =  _.flatMap(remPositiveMargins, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`to-${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-max`]:utils.unitless(size),
-                },
-            }
-        })
-    });
-    addUtilities(toUtilities, variants('margin'));
 
 
     const setters = {
@@ -78,16 +53,7 @@ const topic = function({addUtilities, theme, config, variants,e}) {
         },
     }
 
-    const setterUtilities = _.flatMap(setters, (value, key) => {
-            const classes = _.chain(remPositiveMargins)
-                .map( (_, modifier) => `.${e(`to-${key}-${modifier}`)}`)
-                .join(',')
-                .value();
-
-            return {[`${classes}`]: value};
-        });
-
-    addUtilities(setterUtilities, variants('margin'));
+    utils.createClampedUtilities(tw,{themeKey, modifiers, setters});
 };
 
 module.exports = topic;

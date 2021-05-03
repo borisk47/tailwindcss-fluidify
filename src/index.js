@@ -9,8 +9,8 @@ const topics = [
     require("./gap"),
 ]
 
-const this_plugin = plugin(function({addUtilities, theme,variants,e}) {
-    topics.forEach( topic => topic({addUtilities, theme,variants,e}));
+const this_plugin = plugin(function(tw) {
+    topics.forEach( topic => topic(tw));
 });
 
 module.exports = this_plugin;

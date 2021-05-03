@@ -1,9 +1,7 @@
-const plugin = require('tailwindcss/plugin')
 const _ = require('lodash')
+const utils = require('./utils')
 
-const utils = require('./util')
-
-const topic = function({addUtilities, theme,variants,e}) {
+const topic = function({addUtilities, theme}) {
 
     const root = {
         ':root' : {
@@ -32,7 +30,7 @@ const topic = function({addUtilities, theme,variants,e}) {
     ];
 
     const screens = theme('screens');
-    const min_w_screens = _.pickBy(screens, (value, key) =>{
+    const min_w_screens = _.pickBy(screens, (value) =>{
         return _.isString(value)
     })
 
