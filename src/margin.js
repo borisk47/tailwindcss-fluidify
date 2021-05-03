@@ -17,15 +17,6 @@ const topic = function(tw) {
     }
     tw.addUtilities(root);
 
-    const themeKey = 'margin';
-
-    const modifiers = _.assign({'0':'0rem'},
-        _.chain(tw.theme(themeKey))
-            .pickBy((size) => size.endsWith('rem'))
-            .pickBy((size) => !size.startsWith('-'))
-            .value()
-    );
-
 
     const setters = {
         m: {
@@ -53,6 +44,10 @@ const topic = function(tw) {
         },
     }
 
+    const themeKey = 'margin';
+    const modifiers = _.assign({'0':'0rem'},
+        _.pickBy(tw.theme(themeKey), utils.isPositiveRem)
+    );
     utils.createClampedUtilities(tw,{themeKey, modifiers, setters});
 };
 

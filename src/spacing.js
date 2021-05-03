@@ -29,13 +29,8 @@ const topic = function(tw) {
 
     const themeKey = 'space';
     const modifiers = _.assign({'0':'0rem'},
-        ..._.chain(tw.theme(themeKey))
-            .pickBy((size) => !size.startsWith('-'))
-            .pickBy((size) => size.endsWith('rem'))
-            .flatMap( (size, modifier) => ({[`${modifier}`]: size} ))
-            .value()
+        _.pickBy(tw.theme(themeKey), utils.isPositiveRem)
     );
-
     utils.createClampedUtilities(tw,
         {themeKey, modifiers, setters,
             setterClassTransformer: cls => `${cls} > :not([hidden]) ~ :not([hidden])`});

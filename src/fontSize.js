@@ -20,12 +20,12 @@ const topic = function(tw) {
     }
 
     const themeKey = 'fontSize';
-    const modifiers = _.chain( tw.theme(themeKey) )
-            .mapValues( size => size[0] )
-            .pickBy((size) => size.endsWith('rem'))
-            .value()
-            ;
-
+    const extractFontSize = size => _.isArray(size) ? size[0] : size;
+    const modifiers = _.chain(tw.theme(themeKey))
+        .mapValues(extractFontSize)
+        .pickBy(utils.isPositiveRem)
+        .value()
+        ;
     utils.createClampedUtilities(tw,{themeKey, modifiers, setters});
 };
 

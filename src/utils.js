@@ -19,7 +19,9 @@ function clampifyProp(propName) {
 }
 
 
-
+function isPositiveRem (size) {
+    return !size.startsWith('-') && size.endsWith('rem');
+}
 
 function createClampedUtilities({addUtilities, variants, e},
                                 {themeKey, modifiers, setters, setterClassTransformer = cls => cls} ) {
@@ -52,4 +54,4 @@ function createClampedUtilities({addUtilities, variants, e},
 
 
 
-module.exports = {unitless, clampifyProp, createClampedUtilities};
+module.exports = {unitless, clampifyProp, createClampedUtilities, isPositiveRem};
