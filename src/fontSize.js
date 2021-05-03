@@ -1,44 +1,16 @@
 const _ = require('lodash')
-const utils = require('./util')
+const utils = require('./utils')
 
 
 
-const topic = function({addUtilities, theme, config, variants,e}) {
+const topic = function(tw) {
 
     const root = {
         ':root' : {
             '--f-text-min': '1',
         }
     }
-    addUtilities(root);
-
-
-    const remFontSizes = _.chain( theme('fontSize') )
-            .mapValues( size => size[0] )
-            .pickBy((size) => size.endsWith('rem'))
-            .value()
-            ;
-
-    const prefixes = ['text'];
-    const utilities =  _.transform(remFontSizes, (result, size, modifier) => {
-         _.each(prefixes, prefix => {
-            result[`.${e(`${prefix}-${modifier}`)}`] = {[`--f-${prefix}-min`]:utils.unitless(size)}
-         });
-    });
-    addUtilities(utilities, variants('fontSize'));
-
-
-    const toUtilities =  _.flatMap(remFontSizes, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`to-${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-max`]:utils.unitless(size),
-                },
-            }
-        })
-    });
-    addUtilities(toUtilities, variants('fontSize'));
-
+    tw.addUtilities(root);
 
     const setters = {
         text: {
@@ -47,18 +19,14 @@ const topic = function({addUtilities, theme, config, variants,e}) {
         }
     }
 
-    const setterUtilities = _.flatMap(setters, (value, key) => {
-        const classes = _.chain(remFontSizes)
-            .map( (_, modifier) => `.${e(`to-${key}-${modifier}`)}`)
-            .join(',')
-            .value();
+    const themeKey = 'fontSize';
+    const modifiers = _.chain( tw.theme(themeKey) )
+            .mapValues( size => size[0] )
+            .pickBy((size) => size.endsWith('rem'))
+            .value()
+            ;
 
-        return {[`${classes}`]: value};
-    });
-
-    addUtilities(setterUtilities, variants('fontSize'));
-
-
+    utils.createClampedUtilities(tw,{themeKey, modifiers, setters});
 };
 
 module.exports = topic;

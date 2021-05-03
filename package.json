@@ -33,6 +33,7 @@
     "autoprefixer": "^10.0.2",
     "clean-css": "^5.0.0",
     "postcss": "^8.1.7",
-    "tailwindcss": ">=2.0.0"
+    "tailwindcss": ">=2.0.0",
+    "lodash": "^4.17.21"
   }
 }

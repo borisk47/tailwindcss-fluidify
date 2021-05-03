@@ -1,7 +1,7 @@
 const _ = require('lodash')
-const utils = require('./util')
+const utils = require('./utils')
 
-const topic = function({addUtilities, theme, config, variants,e}) {
+const topic = function(tw) {
 
     const root = {
         ':root' : {
@@ -10,42 +10,7 @@ const topic = function({addUtilities, theme, config, variants,e}) {
             '--f-gap-min': '0',
         }
     }
-    addUtilities(root);
-
-
-    const remPositiveGap = _.assign({'0':'0rem'},
-        ..._.chain(theme('gap'))
-            .pickBy((size) => size.endsWith('rem'))
-            .pickBy((size) => !size.startsWith('-'))
-            .flatMap( (size, modifier) => ({[`${modifier}`]: size} ))
-            .value()
-    );
-
-
-    const prefixes = ['gap', 'gap-x', 'gap-y'];
-
-    const utilities =  _.flatMap(remPositiveGap, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-min`]:utils.unitless(size),
-                },
-            }
-        })
-    });
-    addUtilities(utilities, variants('gap'));
-
-
-    const toUtilities =  _.flatMap(remPositiveGap, (size, modifier) => {
-        return _.map(prefixes, prefix => {
-            return {
-                [`.${e(`to-${prefix}-${modifier}`)}`]:{
-                    [`--f-${prefix}-max`]:utils.unitless(size),
-                },
-            }
-        })
-    });
-    addUtilities(toUtilities, variants('gap'));
+    tw.addUtilities(root);
 
 
     const setters = {
@@ -63,16 +28,15 @@ const topic = function({addUtilities, theme, config, variants,e}) {
         }
     }
 
-    const setterUtilities = _.flatMap(setters, (value, key) => {
-        const classes = _.chain(remPositiveGap)
-            .map( (_, modifier) => `.${e(`to-${key}-${modifier}`)}`)
-            .join(',')
-            .value();
+    const themeKey = 'gap';
+    const modifiers = _.assign({'0':'0rem'},
+        ..._.chain(tw.theme(themeKey))
+            .pickBy((size) => !size.startsWith('-'))
+            .pickBy((size) => size.endsWith('rem'))
+            .flatMap( (size, modifier) => ({[`${modifier}`]: size} ))
+            .value()
+    );
 
-        return {[`${classes}`]: value};
-    });
-
-    addUtilities(setterUtilities, variants('gap'));
-};
+    utils.createClampedUtilities(tw,{themeKey, modifiers, setters});};
 
 module.exports = topic;
