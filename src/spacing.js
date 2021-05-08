@@ -33,7 +33,7 @@ const topic = function(tw) {
     );
     utils.createClampedUtilities(tw,
         {themeKey, modifiers, setters,
-            setterClassTransformer: cls => `${cls} > :not([hidden]) ~ :not([hidden])`});
+            classTransformer: cls => `${cls} > :not([hidden]) ~ :not([hidden])`});
 
 };
 

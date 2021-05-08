@@ -24,11 +24,11 @@ function isPositiveRem (size) {
 }
 
 function createClampedUtilities({addUtilities, variants, e},
-                                {themeKey, modifiers, setters, setterClassTransformer = cls => cls} ) {
+                                {themeKey, modifiers, setters, classTransformer = cls=>cls} ) {
 
     const utilities =  _.transform(modifiers, (result, size, modifier) => {
         _.mapKeys(_.keys(setters), prefix => {
-            result[`.${e(`${prefix}-${modifier}`)}`] = {[`--f-${prefix}-min`]:unitless(size)}
+            result[classTransformer(`.${e(`${prefix}-${modifier}`)}`)] = {[`--f-${prefix}-min`]:unitless(size)}
         });
     });
     addUtilities(utilities, variants(themeKey));
@@ -36,14 +36,14 @@ function createClampedUtilities({addUtilities, variants, e},
 
     const toUtilities =  _.transform(modifiers, (result, size, modifier) => {
         _.mapKeys(_.keys(setters), prefix => {
-            result[`.${e(`to-${prefix}-${modifier}`)}`] = {[`--f-${prefix}-max`]:unitless(size)}
+            result[classTransformer(`.${e(`to-${prefix}-${modifier}`)}`)] = {[`--f-${prefix}-max`]:unitless(size)}
         });
     });
     addUtilities(toUtilities, variants(themeKey));
 
     const setterUtilities = _.flatMap(setters, (value, key) => {
         const classes = _.chain(modifiers)
-            .map( (_, modifier) => setterClassTransformer(`.${e(`to-${key}-${modifier}`)}`) )
+            .map( (_, modifier) => classTransformer(`.${e(`to-${key}-${modifier}`)}`) )
             .join(',')
             .value();
 
